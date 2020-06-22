@@ -73,7 +73,7 @@ def gettime(s):
 starmass = h[5].s['mass'].sum()
 gasmass = h[5].g['mass'].sum()
 virialmass = starmass+gasmass+h[5].d['mass'].sum()
-data = [5, BH['iord'], gettime(s),getz(s), BH['mass'], BH['r'], starmass, gasmass, virialmass]
+data = ['halo: ',5,'BH_ID: ', BH['iord'],'time: ', gettime(s),'z: ',getz(s),'BH_mass: ', BH['mass'],'Radius: ', BH['r'],'star_mass: ', starmass,'gas_mass: ', gasmass,'virial_mass: ', virialmass]
 
 print('this is the data: ', data)
 
