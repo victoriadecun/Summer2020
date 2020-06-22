@@ -59,7 +59,21 @@ print('this is the y-position: ', BHy)
 BHz=BHposition[:,2]
 print('this is the z-position: ', BHz)
 
-#distance
+#.5 is the square root; distance
 distance=((BHx**2)+(BHy**2)+(BHz**2))**(.5)
 print('this is the distance: ', distance)
+
+#find mass and ID number
+def getz(s):
+    return s.properties['z']
+
+def gettime(s):
+    return pynbody.analysis.cosmology.age(s)
+
+starmass = h[5].s['mass'].sum()
+gasmass = h[5].g['mass'].sum()
+virialmass = starmass+gasmass+h[5].d['mass'].sum()
+data = [5, BH['iord'], gettime(s),getz(s), BH['mass'], BH['r'], starmass, gasmass, virialmass]
+
+print('this is the data: ', data)
 
