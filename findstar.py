@@ -77,3 +77,6 @@ data = ['halo: ',5,'BH_ID: ', BH['iord'],'time: ', gettime(s),'z: ',getz(s),'BH_
 
 print('this is the data: ', data)
 
+#make an image of galaxy
+pynbody.plot.stars.render(s,width='10 kpc')
+plt.show()
