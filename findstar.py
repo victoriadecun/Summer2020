@@ -80,3 +80,52 @@ print('this is the data: ', data)
 #make an image of galaxy
 pynbody.plot.stars.render(s,width='10 kpc')
 plt.show()
+
+#density profiles
+#create a profile object for stars in 3D
+p = pynbody.analysis.profile.Profile(h[5].s,min=.01,max=2,nbins=50,ndim=3,type='log')
+
+# make a 3D density plot of the dark matter (note ndim=3 in the constructor below)                                                             
+p1 = pynbody.analysis.profile.Profile(h[5].d,min=.01,max=2,nbins=50,ndim=3,type='log')
+
+#make a 3D density plot of gas                                                                                                                 
+p2 = pynbody.analysis.profile.Profile(h[5].g,min=.01,max=2,nbins=50,ndim=3,type='log')
+
+#make a 3D density plot of all combined                                                                                                        
+p3 = pynbody.analysis.profile.Profile(h[5],min=.01,max=2,nbins=50,ndim=3,type='log')
+
+# make the figure and sub plots                                                                                                                
+f, axs = plt.subplots(2,2,figsize=(20,6))
+
+# make the plot
+axs[0,0].plot(p['rbins'],p['density'], 'k')
+axs[0,0].semilogy()
+axs[0,0].semilogx()
+axs[0,0].set_xlabel('R [kpc]')
+axs[0,0].set_ylabel(r'$\rho_{\star}$ [M$_{\odot}$ kpc$^{-3}$]')
+axs[0,0].set_title('Density Profile of Stars')
+
+axs[1,0].plot(p1['rbins'],p1['density'], 'k')
+axs[1,0].semilogy()
+axs[1,0].semilogx()
+axs[1,0].set_xlabel('R [kpc]')
+axs[1,0].set_ylabel(r'$\rho_{DM}$ [M$_{\odot}$ kpc$^{-3}$]')
+axs[1,0].set_title('Density Profile of Dark Matter')
+
+axs[0,1].plot(p2['rbins'],p2['density'], 'k')
+axs[0,1].semilogy()
+axs[0,1].semilogx()
+axs[0,1].set_xlabel('R [kpc]')
+axs[0,1].set_ylabel(r'$\rho_{G}$ [M$_{\odot}$ kpc$^{-3}$]')
+axs[0,1].set_title('Density Profile of Gas')
+
+axs[1,1].plot(p3['rbins'],p3['density'], 'k')
+axs[1,1].semilogy()
+axs[1,1].semilogx()
+axs[1,1].set_xlabel('R [kpc]')
+axs[1,1].set_ylabel(r'$\rho_{ALL}$ [M$_{\odot}$ kpc$^{-3}$]')
+axs[1,1].set_title('Density Profile of Stars, Dark Matter, & Gas')
+
+plt.subplots_adjust(left=None,bottom=None,right=None,top=0.9,wspace=0.5,hspace=0.5)
+
+plt.show()
