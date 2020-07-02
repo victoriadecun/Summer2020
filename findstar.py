@@ -129,3 +129,87 @@ axs[1,1].set_title('Density Profile of Stars, Dark Matter, & Gas')
 plt.subplots_adjust(left=None,bottom=None,right=None,top=0.9,wspace=0.5,hspace=0.5)
 
 plt.show()
+
+#Velocity Dispersion
+
+#This code creates a sphere around the black holes position
+radius = 0.5
+sphere= pynbody.filt.Sphere(radius, cen= (-634.00464133,1258.07020815, 29.86851614))
+print('Sphere: ',sphere)
+
+#This code tells us how many stars are in this section. len==100 to get 100 stars around BH originally [0:]
+num_of_stars = s.stars[len==100]
+in_sphere = num_of_stars[sphere]
+total_stars = len(in_sphere)
+print('Total Stars: ',total_stars)
+
+#Find the velocities of each star
+velocity = in_sphere['vel']
+print('Velocity: ',velocity)
+
+#Now we need to find the velocity of these stars in x,y,z 
+x = np.array([vel[0] for vel in velocity])
+y = np.array([vel[1] for vel in velocity])
+z = np.array([vel[2] for vel in velocity])
+
+#Now we can find the average of these by dividing by the total
+vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
+print('Dispersion Velocity: ',vel_answer)
+print(s['vel'].units)
+
+#Now divide by total number of stars
+velocity = vel_answer.sum() / total_stars
+print('Velocity: ',velocity)
+'''
+plt.figure(1)
+plt.subplot(221)
+plt.hist(x, color = 'r', bins = 100)
+plt.xlabel("x")
+plt.ylabel("frequency")
+plt.axvline(x.mean(), color='k', linestyle='dashed', linewidth=1)
+plt.legend()
+plt.grid()
+
+plt.subplot(222)
+plt.hist(y, color = 'b', bins = 100)
+plt.xlabel("y")
+plt.ylabel("frequency")
+plt.axvline(y.mean(), color='k', linestyle='dashed', linewidth=1)
+plt.legend()
+plt.grid()
+
+plt.subplot(223)
+plt.hist(z, color = 'g', bins = 100)
+plt.xlabel("z")
+plt.ylabel("frequency")
+plt.axvline(z.mean(), color='k', linestyle='dashed', linewidth=1)
+plt.legend()
+plt.grid()
+#plt.show()
+'''
+#This is the function that found the black hole
+def findBH(s):
+    BH = s.stars[pynbody.filt.LowPass('tform', 0.0)]
+    return BH
+Found_one= findBH(s)
+
+
+#Now I just ask the computer to print the mass of the object found in this funct
+BH_mass = [Found_one['mass'], Found_one['r']]
+print('BH Mass: ',BH_mass)
+
+
+'''
+x = np.array([vel[0] for vel in velocity])
+y = np.array([vel[1] for vel in velocity])
+z = np.array([vel[2] for vel in velocity])
+
+i = x / total_stars
+j = y / total_stars
+k = z / total_stars
+#Now we can find the average of these by dividing by the total
+vel_answer = np.sqrt((i)**2 + (j)**2 + (k)**2)
+print(vel_answer)
+print(s['vel'].units)
+
+'''
