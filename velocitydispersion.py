@@ -39,15 +39,12 @@ print("Total stars: ",total_stars)
 velocity=in_sphere['vel']
 
 #find velocity of stars in x,y,z
-x = np.array([vel[0] for vel in velocity])
-y = np.array([vel[1] for vel in velocity])
-z = np.array([vel[2] for vel in velocity])
+x = np.std(velocity[0])
+y = np.std(velocity[1])
+z = np.std(velocity[2])
 
 #average of these by dividing by total (velocity dispersion)
 vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 
-#divide by total # of stars
-velocity = vel_answer.sum() / total_stars
-
-print 'The stars around the black hole in this snapshot are moving at:', velocity
+print("Velocity Dispersion: ",vel_answer)
                                                          
