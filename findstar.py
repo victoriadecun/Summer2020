@@ -86,7 +86,7 @@ plt.show()
 
 #density profiles
 #create a profile object for stars in 3D
-p = pynbody.analysis.profile.Profile(h[5].s,min=.01,max=2,nbins=50,ndim=3,type='log')
+#p = pynbody.analysis.profile.Profile(h[5].s,min=.01,max=2,nbins=50,ndim=3,type='log')
 
 # make a 3D density plot of the dark matter (note ndim=3 in the constructor below)                                                             
 #p1 = pynbody.analysis.profile.Profile(h[5].d,min=.01,max=2,nbins=50,ndim=3,type='log')
@@ -136,6 +136,9 @@ plt.show()
 """
 
 #make slope of stellar density profile only
+
+#create a profile object for stars in 3D                                                                
+p = pynbody.analysis.profile.Profile(h[5].s,min=.1,max=1,nbins=50,ndim=3,type='log')
 
 plt.plot(p['rbins'],p['density'],'k')
 x=np.array(p['rbins'])
