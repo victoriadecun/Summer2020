@@ -138,15 +138,22 @@ plt.show()
 #make slope of stellar density profile only
 
 #create a profile object for stars in 3D                                                                
-p = pynbody.analysis.profile.Profile(h[5].s,min=.1,max=1,nbins=50,ndim=3,type='log')
+p = pynbody.analysis.profile.Profile(h[5].s,min=.01,max=2,nbins=50,ndim=3,type='log')
 
-plt.plot(p['rbins'],p['density'],'k')
-x=np.array(p['rbins'])
-y=np.array(p['density'])
+#range out is 0.4, range in 0.04
+rout=0.4
+rin=0.04
+#filter is filt, range of rbins >in and <out
+filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
+print filt
+
+plt.plot(np.log(p['rbins']),np.log(p['density']),'k')
+x=np.array(np.log(p['rbins'][filt]))
+y=np.array(np.log(p['density'][filt]))
 m,b=np.polyfit(x,y,1)
 plt.plot(x,y,'o')
-plt.xscale('log')
-plt.yscale('log')
+#plt.xscale('log')
+#plt.yscale('log')
 #plt.plot.semilogy()
 #plt.plot.semilogx()
 plt.xlabel('R [kpc]')
