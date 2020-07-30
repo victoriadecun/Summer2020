@@ -11,6 +11,7 @@ s=pynbody.load("/media/jillian/cptmarvel/cptmarvel.cosmo25cmb.4096g5HbwK1BH.0040
 #convert the units
 s.physical_units()
 
+
 #this finds stars
 #stars=s.stars[0:]
 #print(stars)
@@ -77,27 +78,31 @@ data = ['halo: ',5,'BH_ID: ', BH['iord'],'time: ', gettime(s),'z: ',getz(s),'BH_
 
 print('this is the data: ', data)
 
+"""
 #make an image of galaxy
 pynbody.plot.stars.render(s,width='10 kpc')
 plt.show()
+"""
 
 #density profiles
 #create a profile object for stars in 3D
-p = pynbody.analysis.profile.Profile(h[5].s,min=.01,max=2,nbins=50,ndim=3,type='log')
+#p = pynbody.analysis.profile.Profile(h[5].s,min=.01,max=2,nbins=50,ndim=3,type='log')
 
 # make a 3D density plot of the dark matter (note ndim=3 in the constructor below)                                                             
-p1 = pynbody.analysis.profile.Profile(h[5].d,min=.01,max=2,nbins=50,ndim=3,type='log')
+#p1 = pynbody.analysis.profile.Profile(h[5].d,min=.01,max=2,nbins=50,ndim=3,type='log')
 
 #make a 3D density plot of gas                                                                                                                 
-p2 = pynbody.analysis.profile.Profile(h[5].g,min=.01,max=2,nbins=50,ndim=3,type='log')
+#p2 = pynbody.analysis.profile.Profile(h[5].g,min=.01,max=2,nbins=50,ndim=3,type='log')
 
 #make a 3D density plot of all combined                                                                                                        
-p3 = pynbody.analysis.profile.Profile(h[5],min=.01,max=2,nbins=50,ndim=3,type='log')
+#p3 = pynbody.analysis.profile.Profile(h[5],min=.01,max=2,nbins=50,ndim=3,type='log')
 
 # make the figure and sub plots                                                                                                                
-f, axs = plt.subplots(2,2,figsize=(20,6))
+#f, axs = plt.subplots(2,2,figsize=(20,6))
 
 # make the plot
+
+"""
 axs[0,0].plot(p['rbins'],p['density'], 'k')
 axs[0,0].semilogy()
 axs[0,0].semilogx()
@@ -127,5 +132,33 @@ axs[1,1].set_ylabel(r'$\rho_{ALL}$ [M$_{\odot}$ kpc$^{-3}$]')
 axs[1,1].set_title('Density Profile of Stars, Dark Matter, & Gas')
 
 plt.subplots_adjust(left=None,bottom=None,right=None,top=0.9,wspace=0.5,hspace=0.5)
+plt.show()
+"""
 
+#make slope of stellar density profile only
+
+#create a profile object for stars in 3D                                                                
+p = pynbody.analysis.profile.Profile(h[5].s,min=.01,max=2,nbins=50,ndim=3,type='log')
+
+#range out is 0.4, range in 0.04
+rout=0.4
+rin=0.04
+#filter is filt, range of rbins >in and <out
+filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
+print filt
+
+plt.plot(np.log10(p['rbins']),np.log10(p['density']),'k')
+x=np.array(np.log10(p['rbins'][filt]))
+y=np.array(np.log10(p['density'][filt]))
+m,b=np.polyfit(x,y,1)
+plt.plot(x,y,'o')
+#plt.xscale('log')
+#plt.yscale('log')
+#plt.plot.semilogy()
+#plt.plot.semilogx()
+plt.xlabel('R [kpc]')
+plt.ylabel(r'$\rho_{\star}$ [M$_{\odot}$ kpc$^{-3}$]')
+plt.plot(x,m*x+b)
+#plt.twinx()
+plt.title('Density Profile of Stars')
 plt.show()
