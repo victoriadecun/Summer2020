@@ -13,7 +13,7 @@ from gwsnrcalc.utils.readnoisecurves import read_noise_curve
 m1 = 4.93481e+06
 m2 = 3.36428e+06
 z = 1.7536451
-separation = 3.38493483e+02
+separation = 0.60454308
 star_gamma = -0.5957736982667012
 vel_disp_1 = 189.03323719
 vel_disp_2 = 189.03323719
