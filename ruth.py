@@ -7,7 +7,7 @@ from matplotlib.ticker import NullFormatter
 
 #load snapshot
 
-s=pynbody.load("/media/jillian/h229/h229.cosmo50PLK.3072gst5HbwK1BH.001056/h229.cosmo50PLK.3072gst5HbwK1BH.001056")
+s=pynbody.load("/mnt/data0/jillian/h229/h229.cosmo50PLK.3072gst5HbwK1BH.001056/h229.cosmo50PLK.3072gst5HbwK1BH.001056")
 
 #convert the units
 s.physical_units()
@@ -103,7 +103,7 @@ rout=0.4
 rin=0.02
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
-print filt
+print(filt)
 
 #show slope of density profile
 plt.plot(np.log10(p['rbins']),np.log10(p['density']),'k')
@@ -122,10 +122,13 @@ plt.plot(x,m*x+b)
 plt.title('Density Profile of Stars')
 plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
+print("This is x: ", x)
+print("This is y: ", y)
 
+#save x and y into a data file
 
-
-
+#c = np.savetxt('ruth_1.75_data.data', (x,y))
+c = np.savetxt('ruth_1.75_data.data', np.column_stack((x,y)), delimiter=',')
 
 
 
