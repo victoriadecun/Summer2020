@@ -6,7 +6,7 @@ from matplotlib.ticker import NullFormatter
 
 #load snapshot
 
-s=pynbody.load("/media/jillian/h242/h242.cosmo50PLK.3072gst5HbwK1BH.000384/h242.cosmo50PLK.3072gst5HbwK1BH.000384")
+s=pynbody.load("/mnt/data0/jillian/h242/h242.cosmo50PLK.3072gst5HbwK1BH.000384/h242.cosmo50PLK.3072gst5HbwK1BH.000384")
 
 #convert the units
 s.physical_units()
@@ -84,10 +84,10 @@ p = pynbody.analysis.profile.Profile(h[6].s,min=.01,max=2,nbins=50,ndim=3,type='
 
 #range out is 0.4, range in 0.04
 rout=0.4
-rin=0.02
+rin=0.035
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
-print filt
+print(filt)
 
 #show slope of density profile
 plt.plot(np.log10(p['rbins']),np.log10(p['density']),'k')
@@ -107,9 +107,11 @@ plt.title('Density Profile of Stars')
 plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
 
+#save x and y into a data file
+c = np.savetxt('sonia_4.6_data.data', np.column_stack((x,y)), delimiter=',')
 
 
-
+"""
 
 
 
@@ -175,3 +177,4 @@ z = np.std(velocity[2])
 #average of these by dividing by total (velocity dispersion)
 vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 print("Velocity Dispersion: ",vel_answer)
+"""
