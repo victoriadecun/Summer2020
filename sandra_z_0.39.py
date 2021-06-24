@@ -6,7 +6,7 @@ from matplotlib.ticker import NullFormatter
 
 #load snapshot
 
-s=pynbody.load("/media/jillian/h148/h148.cosmo50PLK.3072g3HbwK1BH.002688/h148.cosmo50PLK.3072g3HbwK1BH.002688")
+s=pynbody.load("/mnt/data0/jillian/h148/h148.cosmo50PLK.3072g3HbwK1BH.002688/h148.cosmo50PLK.3072g3HbwK1BH.002688")
 
 #convert the units
 s.physical_units()
@@ -84,10 +84,10 @@ p = pynbody.analysis.profile.Profile(h[4].s,min=.01,max=2,nbins=50,ndim=3,type='
 
 #range out is 0.4, range in 0.04
 rout=0.4
-rin=0.02
+rin=0.05
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
-print filt
+print(filt)
 
 #show slope of density profile
 plt.plot(np.log10(p['rbins']),np.log10(p['density']),'k')
@@ -107,10 +107,12 @@ plt.title('Density Profile of Stars')
 plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
 
+#save x and y into a data file
+c = np.savetxt('sandra_0.39_data.data', np.column_stack((x,y)), delimiter=',')
 
 
 
-
+"""
 
 #calculate distance for separation
 #finds number of BH
@@ -173,3 +175,4 @@ z = np.std(velocity[2])
 #average of these by dividing by total (velocity dispersion)
 vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 print("Velocity Dispersion: ",vel_answer)
+"""
