@@ -97,10 +97,63 @@ pynbody.analysis.angmom.faceon(h4)
 #create a profile object for stars in 3D                                                               
 p = pynbody.analysis.profile.Profile(h[4].s,min=.01,max=2,nbins=50,ndim=3,type='log')
 
+#new r in and r out. calculate virial radius, and 2% of v.r. will be r out.
+#original range was out is 0.4, range in 0.04
 
-#range out is 0.4, range in 0.04
-rout=0.4
-rin=0.02
+def virial_radius(h4, cen=None, overden=178, r_max=None, rho_def='matter'):
+    if r_max is None:
+        r_max = (h4["x"].max() - h4["x"].min())
+    else:
+        if cen is not None:
+            sim = h4[filt.Sphere(r_max, cen)]
+        else:
+            sim = h4[filt.Sphere(r_max)]
+
+    r_min = 0.0
+
+    if cen is not None:
+        tx = transformation.inverse_translate(sim, cen)
+    else:
+        tx = transformation.null(sim)
+
+    if rho_def == 'matter':
+       ref_density = sim.properties["omegaM0"] * cosmology.rho_crit(sim, z=0) * (1.0 + sim.properties["z"]) ** 3
+    elif rho_def == 'critical':
+        ref_density = cosmology.rho_crit(sim, z=sim.properties["z"])
+    else:
+        raise ValueError(rho_def + "is not a valid definition for the reference density")
+
+    target_rho = overden * ref_density
+    logger.info("target_rho=%s", target_rho)
+
+    with tx:
+        sim = h4[filt.Sphere(r_max)]
+        with h4.immediate_mode:
+            mass_ar = np.asarray(h4['mass'])
+            r_ar = np.asarray(h4['r'])
+
+        """
+        #pure numpy implementation
+        rho = lambda r: np.dot(
+            mass_ar, r_ar < r) / (4. * math.pi * (r ** 3) / 3)
+
+        #numexpr alternative - not much faster because sum is not threaded
+        def rho(r) :
+            r_ar; mass_ar; # just to get these into the local namespace
+            return ne.evaluate("sum((r_ar<r)*mass_ar)")/(4.*math.pi*(r**3)/3)
+        """
+        rho = lambda r: util.sum_if_lt(mass_ar,r_ar,r)/(4. * math.pi * (r ** 3) / 3)
+        result = util.bisect(r_min, r_max, lambda r: target_rho -
+                             rho(r), epsilon=0, eta=1.e-3 * target_rho, verbose=False)
+
+    return result
+
+#vr = that return result but how?
+
+z = 1.7536451
+rin = (0.68)/(1+z)
+rout = 0.02*vr
+
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
 print(filt)
