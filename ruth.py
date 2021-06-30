@@ -4,6 +4,12 @@ import numpy as np
 import pandas as pd
 import matplotlib.pylab as plt
 from matplotlib.ticker import NullFormatter
+from pynbody import filt, util, config, array, units, transformation
+#from pynbody import cosmology, _com, profile
+import math
+import logging
+logger = logging.getLogger('pynbody.analysis.halo')
+
 
 #load snapshot
 
@@ -112,14 +118,14 @@ def virial_radius(h4, cen=None, overden=178, r_max=None, rho_def='matter'):
     r_min = 0.0
 
     if cen is not None:
-        tx = transformation.inverse_translate(sim, cen)
+        tx = transformation.inverse_translate(h4, cen)
     else:
-        tx = transformation.null(sim)
+        tx = transformation.null(h4)
 
     if rho_def == 'matter':
-       ref_density = sim.properties["omegaM0"] * cosmology.rho_crit(sim, z=0) * (1.0 + sim.properties["z"]) ** 3
+       ref_density = h4.properties["omegaM0"] * cosmology.rho_crit(h4, z=0) * (1.0 + h4.properties["z"]) ** 3
     elif rho_def == 'critical':
-        ref_density = cosmology.rho_crit(sim, z=sim.properties["z"])
+        ref_density = cosmology.rho_crit(h4, z=h4.properties["z"])
     else:
         raise ValueError(rho_def + "is not a valid definition for the reference density")
 
@@ -148,8 +154,9 @@ def virial_radius(h4, cen=None, overden=178, r_max=None, rho_def='matter'):
 
     return result
 
+print(virial_radius)
 #vr = that return result but how?
-
+vr = virial_radius(h4)
 z = 1.7536451
 rin = (0.68)/(1+z)
 rout = 0.02*vr
