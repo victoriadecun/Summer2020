@@ -4,11 +4,11 @@ import numpy as np
 import pandas as pd
 import matplotlib.pylab as plt
 from matplotlib.ticker import NullFormatter
-from pynbody import filt, util, config, array, units, transformation
+#from pynbody import filt, util, config, array, units, transformation
 #from pynbody import cosmology, _com, profile
 import math
-import logging
-logger = logging.getLogger('pynbody.analysis.halo')
+#import logging
+#logger = logging.getLogger('pynbody.analysis.halo')
 
 
 #load snapshot
@@ -17,7 +17,11 @@ s=pynbody.load("/mnt/data0/jillian/h229/h229.cosmo50PLK.3072gst5HbwK1BH.001056/h
 
 #convert the units
 s.physical_units()
-"""
+
+
+#
+
+
 #  load any available halo
 h = s.halos()
 
@@ -27,7 +31,7 @@ def findBH(s):
     BH = s.stars[BHfilter]
     return BH
 BH = findBH(s)
-print BH
+print(BH)
 
 #function to find the halos that the galaxy is in
 def findBHhalos(s):
@@ -39,11 +43,11 @@ def findBHhalos(s):
 BHhalos = findBHhalos(s)
 
 #printing the halos
-print BHhalos
+print(BHhalos)
 
 #sorting the halos, indexes/indecis are like an exact address
 currenthalo = np.argsort(BHhalos)
-print BHhalos[currenthalo]
+print(BHhalos[currenthalo])
 def getz(s):
     return s.properties['z']
 
@@ -53,9 +57,9 @@ for i in currenthalo:
 
     #which halo are we on?
     currenthalo = BHhalos[i]
-    print 'current halo: ', currenthalo
+    print('current halo: ', currenthalo)
 
-    print i
+    print(i)
     
     #put the galaxy you care about in the center of the simulation
     pynbody.analysis.angmom.faceon(h[currenthalo])
@@ -75,23 +79,24 @@ for i in currenthalo:
 
     #putting the x-values into a column
     BHx= BHposition[[i],0]
-    print "x postion", BHx
+    print("x postion", BHx)
 
     #putting the y-values into a column
     BHy= BHposition[[i],1]
-    print "y position", BHy
+    print("y position", BHy)
 
     #putting the z-values into a column
     BHz= BHposition[[i],2]
-    print "z position", BHz
+    print("z position", BHz)
 
     #the .5 is the square root , this is the distance formula
     #distance =((BHx**2)+(BHy**2)+(BHz**2))**(.5)
     #print 'this is the distance :'
     #print "this is the distance :", distance
     data = [currenthalo, BH['iord'][i]] 
-    print "This is current halo, ID", data
-"""
+    print("This is current halo, ID", data)
+
+#
 
 #  load any available halo                                                                             
 h = s.halos()
@@ -106,57 +111,7 @@ p = pynbody.analysis.profile.Profile(h[4].s,min=.01,max=2,nbins=50,ndim=3,type='
 #new r in and r out. calculate virial radius, and 2% of v.r. will be r out.
 #original range was out is 0.4, range in 0.04
 
-def virial_radius(h4, cen=None, overden=178, r_max=None, rho_def='matter'):
-    if r_max is None:
-        r_max = (h4["x"].max() - h4["x"].min())
-    else:
-        if cen is not None:
-            sim = h4[filt.Sphere(r_max, cen)]
-        else:
-            sim = h4[filt.Sphere(r_max)]
-
-    r_min = 0.0
-
-    if cen is not None:
-        tx = transformation.inverse_translate(h4, cen)
-    else:
-        tx = transformation.null(h4)
-
-    if rho_def == 'matter':
-       ref_density = h4.properties["omegaM0"] * cosmology.rho_crit(h4, z=0) * (1.0 + h4.properties["z"]) ** 3
-    elif rho_def == 'critical':
-        ref_density = cosmology.rho_crit(h4, z=h4.properties["z"])
-    else:
-        raise ValueError(rho_def + "is not a valid definition for the reference density")
-
-    target_rho = overden * ref_density
-    logger.info("target_rho=%s", target_rho)
-
-    with tx:
-        sim = h4[filt.Sphere(r_max)]
-        with h4.immediate_mode:
-            mass_ar = np.asarray(h4['mass'])
-            r_ar = np.asarray(h4['r'])
-
-        """
-        #pure numpy implementation
-        rho = lambda r: np.dot(
-            mass_ar, r_ar < r) / (4. * math.pi * (r ** 3) / 3)
-
-        #numexpr alternative - not much faster because sum is not threaded
-        def rho(r) :
-            r_ar; mass_ar; # just to get these into the local namespace
-            return ne.evaluate("sum((r_ar<r)*mass_ar)")/(4.*math.pi*(r**3)/3)
-        """
-        rho = lambda r: util.sum_if_lt(mass_ar,r_ar,r)/(4. * math.pi * (r ** 3) / 3)
-        result = util.bisect(r_min, r_max, lambda r: target_rho -
-                             rho(r), epsilon=0, eta=1.e-3 * target_rho, verbose=False)
-
-    return result
-
-print(virial_radius)
-#vr = that return result but how?
-vr = virial_radius(h4)
+vr = pynbody.analysis.halo.virial_radius(h4)
 z = 1.7536451
 rin = (0.68)/(1+z)
 rout = 0.02*vr
@@ -182,44 +137,10 @@ plt.plot(x,m*x+b)
 plt.title('Density Profile of Stars')
 plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
-print("This is x: ", x)
-print("This is y: ", y)
 
 #save x and y into a data file
-
-#c = np.savetxt('ruth_1.75_data.data', (x,y))
 c = np.savetxt('ruth_1.75_data.data', np.column_stack((x,y)), delimiter=',')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-"""
 
 #calculate distance for separation
 
@@ -296,4 +217,4 @@ z = np.std(velocity[2])
 vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 
 print("Velocity Dispersion: ",vel_answer)
-"""
+
