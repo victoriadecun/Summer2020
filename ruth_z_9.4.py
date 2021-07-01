@@ -82,10 +82,15 @@ pynbody.analysis.angmom.faceon(h4)
 #create a profile object for stars in 3D                                                               
 p = pynbody.analysis.profile.Profile(h[4].s,min=.01,max=2,nbins=50,ndim=3,type='log')
 
+#new r in and r out. calculate virial radius, and 2% of v.r. will be r out.
+#original range was out is 0.4, range in 0.04
 
-#range out is 0.4, range in 0.04
-rout=0.4
-rin=0.02
+vr = pynbody.analysis.halo.virial_radius(h4)
+z = 9.4247567
+rin = (0.68)/(1+z)
+rout = 0.02*vr
+
+
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
 print(filt)
@@ -113,7 +118,7 @@ print ("This is Slope & Y-Intercept: ", m,b)
 #c = np.savetxt('ruth_1.75_data.data', (x,y))
 c = np.savetxt('ruth_9.4_data.data', np.column_stack((x,y)), delimiter=',')
 
-"""
+
 #calculate distance for separation
 #finds number of BH
 def findBH(s):
@@ -179,4 +184,4 @@ z = np.std(velocity[2])
 vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 print("Velocity Dispersion: ",vel_answer)
 
-"""
+
