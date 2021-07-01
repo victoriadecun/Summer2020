@@ -10,13 +10,14 @@ from gwsnrcalc.utils.readnoisecurves import read_noise_curve
 #load data
 #data = np.genfromtxt('simulation_input_data_lzk.txt', names=True, dtype=None)
 
+#m=mass, z=redshift, separation=distance between bh, star_gamma=slope
 m1 = 4.93481e+06
 m2 = 3.36428e+06
 z = 1.7536451
 separation = 0.60454308
-star_gamma = -0.5957736982667012
-vel_disp_1 = 189.03323719
-vel_disp_2 = 189.03323719
+star_gamma = -1.3857820611586675
+vel_disp_1 = 30.06791307556581
+vel_disp_2 = 30.06791307556581
 
 #initialize class
 evolve_class=EvolveFDFA()
