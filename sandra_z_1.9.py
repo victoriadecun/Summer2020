@@ -6,7 +6,7 @@ from matplotlib.ticker import NullFormatter
 
 #load snapshot
 
-s=pynbody.load("/media/jillian/h148/h148.cosmo50PLK.3072g3HbwK1BH.000974/h148.cosmo50PLK.3072g3HbwK1BH.000974")
+s=pynbody.load("/mnt/data0/jillian/h148/h148.cosmo50PLK.3072g3HbwK1BH.000974/h148.cosmo50PLK.3072g3HbwK1BH.000974")
 
 #convert the units
 s.physical_units()
@@ -86,12 +86,18 @@ pynbody.analysis.angmom.faceon(h6)
 p = pynbody.analysis.profile.Profile(h[6].s,min=.01,max=2,nbins=50,ndim=3,type='log')
 
 
-#range out is 0.4, range in 0.04
-rout=0.4
-rin=0.02
+#new r in and r out. calculate virial radius, and 2% of v.r. will be r out.
+#original range was out is 0.4, range in 0.04
+
+vr = pynbody.analysis.halo.virial_radius(h6)
+z = 1.9163191
+rin = (0.68)/(1+z)
+rout = 0.02*vr
+
+
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
-print filt
+print(filt)
 
 #show slope of density profile
 plt.plot(np.log10(p['rbins']),np.log10(p['density']),'k')
