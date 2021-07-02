@@ -14,9 +14,9 @@ m1 = 1.71079e+06
 m2 = 529521
 z = 4.6032768
 separation = 0.35654176
-star_gamma = -0.6168892321256455
-vel_disp_1 = 29.88975228
-vel_disp_2 = 29.88975228
+star_gamma = -0.5160731328052469
+vel_disp_1 = 29.998378664129117
+vel_disp_2 = 29.998378664129117
 
 #initialize class
 evolve_class=EvolveFDFA()
