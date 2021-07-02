@@ -117,7 +117,8 @@ plt.title('Density Profile of Stars')
 plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
 
-
+#save x and y into a data file
+c = np.savetxt('sandra_1.9_data.data', np.column_stack((x,y)), delimiter=',')
 
 #calculate distance for separation
 #finds number of BH
