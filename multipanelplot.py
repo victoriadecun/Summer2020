@@ -10,13 +10,12 @@ x4,y4 = np.loadtxt('sonia_4.6_data.data', delimiter=',', unpack=True)
 
 fig, axs = plt.subplots(2,2)
 
-#'tab:blue' etc deleted
-
 ax=fig.add_subplot(111,frameon=False)
-ax.tick_params()
+ax.tick_params(labelcolor='none', which='both', top=False, bottom=False, left=False, right=False)
 ax.set_xlabel('log R [kpc]', fontsize=14)
 ax.set_ylabel(r'log $\rho_{\star}$ [M$_{\odot}$ kpc$^{-3}$]', fontsize=14)
 
+#'tab:blue' etc deleted
 
 axs[0, 0].plot(x, y,'o', color='blue')
 #axs[0, 0].set_title('Axis [0, 0]')
