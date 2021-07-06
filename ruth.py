@@ -144,6 +144,8 @@ plt.title('Density Profile of Stars')
 plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
 
+c = np.savetxt('ruth_1.75_data_filt.data', np.column_stack((x,y)), delimiter=',')
+
 """
 
 #calculate distance for separation
