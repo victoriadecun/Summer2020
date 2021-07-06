@@ -90,6 +90,11 @@ z = 4.6032768
 rin = (0.68)/(1+z)
 rout = 0.02*vr
 
+#save x and y into a data file
+
+x2=np.array(np.log10(p['rbins']))
+y2=np.array(np.log10(p['density']))
+c = np.savetxt('sonia_4.6_data.data', np.column_stack((x2,y2)), delimiter=',')
 
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
@@ -114,7 +119,7 @@ plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
 
 #save x and y into a data file
-c = np.savetxt('sonia_4.6_data.data', np.column_stack((x,y)), delimiter=',')
+c = np.savetxt('sonia_4.6_data_filt.data', np.column_stack((x,y)), delimiter=',')
 
 
 #calculate distance for separation
