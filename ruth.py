@@ -20,7 +20,7 @@ s.physical_units()
 
 
 #
-
+"""
 
 #  load any available halo
 h = s.halos()
@@ -97,7 +97,7 @@ for i in currenthalo:
     print("This is current halo, ID", data)
 
 #
-
+"""
 #  load any available halo                                                                             
 h = s.halos()
 h4=h[4]
@@ -115,6 +115,12 @@ vr = pynbody.analysis.halo.virial_radius(h4)
 z = 1.7536451
 rin = (0.68)/(1+z)
 rout = 0.02*vr
+
+#save x and y into a data file
+
+x2=np.array(np.log10(p['rbins']))
+y2=np.array(np.log10(p['density']))
+c = np.savetxt('ruth_1.75_data.data', np.column_stack((x2,y2)), delimiter=',')
 
 #filter is filt, range of rbins >in and <out
 filt=np.where((p['rbins']>rin) & (p['rbins']<rout))
@@ -138,9 +144,7 @@ plt.title('Density Profile of Stars')
 plt.show()
 print ("This is Slope & Y-Intercept: ", m,b)
 
-#save x and y into a data file
-c = np.savetxt('ruth_1.75_data.data', np.column_stack((x,y)), delimiter=',')
-
+"""
 
 #calculate distance for separation
 
@@ -218,3 +222,4 @@ vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 
 print("Velocity Dispersion: ",vel_answer)
 
+"""
