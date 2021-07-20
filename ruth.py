@@ -146,7 +146,7 @@ print ("This is Slope & Y-Intercept: ", m,b)
 
 c = np.savetxt('ruth_1.75_data_filt.data', np.column_stack((x,y)), delimiter=',')
 
-"""
+
 
 #calculate distance for separation
 
@@ -201,10 +201,13 @@ print('This is the distance between BH: ', distance)
 
 
 #Calculate velocity dispersions
-
+BH_pos=BH['pos']
+BHx = BH_pos[:,0]
+BHy = BH_pos[:,1]
+BHz = BH_pos[:,2]
 BH_position=np.array([BHx[0],BHy[0],BHz[0]])
 #this puts sphere around BH - 0.116 is how i got 99 stars 
-radius= 0.116  #kpc
+radius= 1.0  #kpc
 sphere = pynbody.filt.Sphere(radius, cen =(BH_position))
 stars = s.stars[0:]
 in_sphere = stars[sphere]
@@ -224,4 +227,3 @@ vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 
 print("Velocity Dispersion: ",vel_answer)
 
-"""
