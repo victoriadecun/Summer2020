@@ -170,7 +170,7 @@ BHy = BH_pos[:,1]
 BHz = BH_pos[:,2]
 BH_position=np.array([BHx[0],BHy[0],BHz[0]])
 #this puts sphere around BH - 0.116 is how i got 99 stars 
-radius= 0.116  #kpc
+radius= 1.0  #kpc
 sphere = pynbody.filt.Sphere(radius, cen =(BH_position))
 stars = s.stars[0:]
 in_sphere = stars[sphere]
