@@ -189,3 +189,18 @@ vel_answer = np.sqrt((x)**2 + (y)**2 + (z)**2)
 print("Velocity Dispersion: ",vel_answer)
 
 
+#get stellar mass gas mass and virial mass
+
+#find mass and ID number
+def getz(s):
+    return s.properties['z']
+
+def gettime(s):
+    return pynbody.analysis.cosmology.age(s)
+
+starmass = h[6].s['mass'].sum()
+gasmass = h[6].g['mass'].sum()
+virialmass = starmass+gasmass+h[6].d['mass'].sum()
+data = ['halo: ',6,'BH_ID: ', BH['iord'],'time: ', gettime(s),'z: ',getz(s),'BH_mass: ', BH['mass'],'Radius: ', BH['r'],'star_mass: ', starmass,'gas_mass: ', gasmass,'virial_mass: ', virialmass]
+
+print('This Is The Data: ', data)
